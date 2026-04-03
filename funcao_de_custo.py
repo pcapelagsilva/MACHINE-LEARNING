@@ -71,3 +71,11 @@ Como resultado vemos como o custo varia em relação a ambos w e b através do g
 O fato da função de custo elevar o erro ao quadrado garante que a "superficie de erro" seja CONVEXA (soup bowl). Ela sempre terá um único ponto
 mínimo que pode ser alcançado seguindo o gradiente em todas as dimensões.
 """
+
+""" O gradiente seria mais ou menos assim:"""
+tmp_w = w - alpha * dj_dw
+tmp_b = b - alpha * dj_db
+w = tmp_w
+b = tmp_b
+
+""" Ele é considerado correto pois ambos os parâmetros foram renovados simultaneamente"""
