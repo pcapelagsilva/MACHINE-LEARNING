@@ -123,3 +123,72 @@ plt.show()
 print(f"Previsão casa 1000 sqft: {w_final*1.0 + b_final:0.1f} mil dólares")
 print(f"Previsão casa 1200 sqft: {w_final*1.2 + b_final:0.1f} mil dólares")
 print(f"Previsão casa 2000 sqft: {w_final*2.0 + b_final:0.1f} mil dólares")
+
+# =-=-==-=-=-=-=-=-==- VAMOS VER OS 3 TIPOS DE GRÁFICOS TRABALHANDO -=-=-=-=-=-=-=-=-=-=-=-=-
+
+p_history_np = np.array(p_hist) # Converte a trajetória para array NumPy
+
+# --- Preparação da malha (grid) para os custos (Contorno e 3D) ---
+# Define faixas de w e b para calcular a "bacia" de custo
+# Usamos w de 0 a 400 e b de 0 a 200 para englobar w=200, b=100
+w_range = np.linspace(0, 400, 100)
+b_range = np.linspace(0, 200, 100)
+W_grid, B_grid = np.meshgrid(w_range, b_range) # Cria a malha 2D
+
+# Calcula o custo para cada combinação de w e b na malha
+Z_cost = np.array([compute_cost(x_train, y_train, w, b) for w, b in zip(np.ravel(W_grid), np.ravel(B_grid))])
+Z_cost = Z_cost.reshape(W_grid.shape) # Reajusta a forma para a malha
+
+print("\nGerando gráficos...")
+
+# Define a estrutura com 1 linha e 3 colunas
+fig = plt.figure(figsize=(20, 6))
+
+# --- GRÁFICO 1: Regressão Linear (Reta Ajustada) ---
+ax1 = fig.add_subplot(131)
+ax1.scatter(x_train, y_train, marker='x', c='r', s=100, label='Dados Reais') # s=tamanho do ponto
+ax1.plot(x_train, w_final * x_train + b_final, c='b', linewidth=3, label='Reta de Previsão')
+ax1.set_title("1. Melhor Ajuste Linear", fontsize=14)
+ax1.set_xlabel("Tamanho (1000 sqft)", fontsize=12)
+ax1.set_ylabel("Preço (1000s de dólares)", fontsize=12)
+ax1.set_xticks([1.0, 2.0]) # Força mostrar os tamanhos dos dados
+ax1.legend()
+ax1.grid(True)
+
+# --- GRÁFICO 2: Contorno da Função de Custo J(w,b) ---
+ax2 = fig.add_subplot(132)
+# Desenha as linhas de contorno coloridas e com rótulos de custo
+contour = ax2.contour(W_grid, B_grid, Z_cost, levels=20, cmap='viridis')
+ax2.clabel(contour, inline=True, fontsize=8) # Rótulos de custo nas linhas
+# Plota a trajetória que o seu algoritmo percorreu (linha branca)
+ax2.plot(p_history_np[:,0], p_history_np[:,1], c='white', linewidth=1, label='Trajetória do Gradiente')
+# Marca o ponto final (objetivo) com uma estrela vermelha
+ax2.scatter(w_final, b_final, c='red', marker='*', s=200, label='Mínimo Global')
+ax2.set_title("2. Contorno de Custo J(w,b)", fontsize=14)
+ax2.set_xlabel("w (Peso)", fontsize=12)
+ax2.set_ylabel("b (Bias)", fontsize=12)
+ax2.legend(loc='lower left')
+ax2.grid(True)
+
+# --- GRÁFICO 3: Superfície 3D da Função de Custo J(w,b) ---
+ax3 = fig.add_subplot(133, projection='3d')
+# Plota a superfície (tigela)
+surface = ax3.plot_surface(W_grid, B_grid, Z_cost, cmap='viridis', edgecolor='none', alpha=0.8)
+# Plota a trajetória descendo o poço (linha preta)
+# Adicionamos J_hist na coordenada Z para a linha seguir a bacia
+# Como J_hist tem mais pontos que p_history_np no início, usamos J_hist[1:]
+# para alinhar se necessário. Aqui usamos o histórico completo salvo.
+# Pegamos o custo de cada ponto da trajetória para a coordenada Z
+cost_path = np.array([compute_cost(x_train, y_train, w, b) for w, b in p_hist])
+ax3.plot(p_history_np[:,0], p_history_np[:,1], cost_path, c='black', linewidth=1, label='Descida')
+ax3.set_title("3. Bacia de Custo 3D", fontsize=14)
+ax3.set_xlabel("w", fontsize=12)
+ax3.set_ylabel("b", fontsize=12)
+ax3.set_zlabel("Custo J", fontsize=12)
+ax3.view_init(elev=20, azim=130) # Ajusta o ângulo de visão inicial
+# Adiciona uma barra de cores
+fig.colorbar(surface, ax=ax3, shrink=0.5, aspect=10)
+
+plt.tight_layout() # Organiza os gráficos para não sobrepor
+print("Janela de gráficos abrindo no WSL...")
+plt.show() # Abre a janela única com os 3 gráficos
