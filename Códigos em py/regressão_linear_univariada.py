@@ -1,0 +1,95 @@
+import numpy as np # Biblioteca popular de computação científica
+import matplotlib.pyplot as plt # Biblioteca popular para plotagem de dados
+plt.style.use('ggplot')
+
+def casa_1(tamanho1, preço1):
+    tamanho1 = 1000
+    preço1 = 300000
+
+def casa_2(tamanho2, preço2):
+    tamanho2 = 2000
+    preço2 = 500000
+
+# x_train é a variável de entrada (tamanho em 1000 sqft)
+# y_train é o alvo (preço em milhares de dólares)
+x_train = np.array([1.0, 2.0])
+y_train = np.array([300.0, 500.0])
+print(f"x_train = {x_train}")
+print(f"y_train = {y_train}")
+print(60*"-")
+
+# m é o número de exemplos de treinamento
+m = x_train.shape[0]
+print(f"O número de exemplo de treinamento é {m}")
+print(60*"-")
+
+# Exemplo de treinamento:
+'''Usaremos (x^(i), y^(i)) para detonar o i-ésimo exemplo de treinamento.
+Como o Python usa indexação zero (x^(0), y^(0)) é (1.0, 300.0)'''
+i = 0
+x_i = x_train[i]
+y_i = y_train[i]
+print(f"(x^({i}), y^({i})) = ({x_i}, {y_i})")
+print(60*"-")
+
+# Nós podemos plotar esses dois pontos usando a função 'scatter()' da Biblioteca 'matplotlib'.
+'''Os argumentos "marker='x'" e "c='r'" mostram os pontos como cruzes vermelhas'''
+
+# Plota os pontos dados
+plt.scatter(x_train, y_train, marker='x', c='r')
+# Define o título
+plt.title("Preços de Casas")
+# Define o rótulo do eixo y
+plt.ylabel('Preço (em milhares de dólares)')
+# Define o rótulo do eixo x
+plt.xlabel('Tamanho (1000 sqft)')
+plt.show()
+
+# A função do modelo para regressão linear é representada como:f_{w,b}(x^{(i)}) = wx^{(i)} + b vamos começar com w=100 e b=100
+w = 100
+b = 100
+'''Para calcularmos a saída do modelo para vários pontos de dados, usamos um loop "for" na função abaixo: '''
+def compute_model_output(x, w, b):
+    """
+    Calcula a previsão de um modelo linear
+    Args:
+      x (ndarray (m,)): Dados, m exemplos 
+      w,b (escalar)    : parâmetros do modelo  
+    Returns
+      f_wb (ndarray (m,)): previsão do modelo
+    """
+    m = x.shape[0]
+    f_wb = np.zeros(m)
+    for i in range(m):
+        f_wb[i] = w * x[i] + b
+
+    return f_wb
+
+# Chama a função e plota o resultado
+tmp_f_wb = compute_model_output(x_train, w, b)
+
+plt.plot(x_train, tmp_f_wb, c='b', label='Nossa Previsão')
+plt.scatter(x_train, y_train, marker='x', c='r', label='Valores Reais')
+plt.legend()
+plt.show()
+
+# Como pode ser visto, w=100 e b=100 não resultam em uma linha que ajusta nossos dados.
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=                     DESAFIO                       =-=-=-=-==-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Faça o mesmo código, agora com w=200 e b=100
+'''w = 200
+b = 100
+
+tmp_f_wb = compute_model_output(x_train, w, b)
+plt.plot(x_train, tmp_f_wb, c='b', label='Nossa Previsão')
+plt.scatter(x_train, y_train, marker='x', c='r', label='Valores Reais')
+plt.legend()
+plt.show()'''
+
+# Agora que temos o modelo, vamos prever o preço de uma casa com 1200 sqft(x = 1.2):
+'''w = 200
+b = 100
+x = 1.2
+cost_1200sqft = w * x_i + b
+
+print(f"${cost_1200sqft:.0f} mil dólares")'''
