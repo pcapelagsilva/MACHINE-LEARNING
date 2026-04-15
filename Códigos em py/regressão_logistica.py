@@ -39,5 +39,6 @@ plt.show()
 
 '''
 O que observar nesse código:
-    --> A Reta Cinza (Linear): Note como ela tenta alcançar o ponto distante (20) e acaba cruzando a linha de 0.5 muito mais para a direita, errando os tumores de tamanho 4 ou 5.--> A Curva Azul (Logística): Ela tem um formato de "S". Ela se mantém entre 0 e 1, ignorando o efeito do ponto distante e mantendo a classificação correta.
+    --> A Reta Cinza (Linear): Note como ela tenta alcançar o ponto distante (20) e acaba cruzando a linha de 0.5 muito mais para a direita, errando os tumores de tamanho 4 ou 5.
+    --> A Curva Azul (Logística): Ela tem um formato de "S". Ela se mantém entre 0 e 1, ignorando o efeito do ponto distante e mantendo a classificação correta.
 '''
