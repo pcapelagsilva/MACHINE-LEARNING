@@ -34,21 +34,21 @@ probabilidade = model.predict_proba(x_test_scaled)[:, 1]
 # 6. VISUALIZAÇÃO DA FRONTEIRA DE DECISÃO
 def plot_decision_boundary(x, y, model, title):
     h = .02 # tamanho do passo na malha
-    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
+    y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
     
     Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     
     plt.contourf(xx, yy, Z, alpha=0.3, cmap=plt.cm.Paired)
-    plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', cmap=plt.cm.Paired)
+    plt.scatter(x[:, 0], x[:, 1], c=y, edgecolors='k', cmap=plt.cm.Paired)
     plt.title(title)
     plt.xlabel("Expressão Gene A")
     plt.ylabel("Expressão Gene B")
 
 plt.figure(figsize=(10, 6))
-plot_decision_boundary(X_train_scaled, y_train, model, "Limite de Decisão - Treino")
+plot_decision_boundary(x_train_scaled, y_train, model, "Limite de Decisão - Treino")
 plt.show()
 
 # 7. RELATÓRIO FINAL (Ótimo para o README do GitHub)
