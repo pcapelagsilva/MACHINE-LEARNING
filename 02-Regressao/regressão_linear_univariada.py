@@ -77,19 +77,19 @@ plt.show()
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=                     DESAFIO                       =-=-=-=-==-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Faça o mesmo código, agora com w=200 e b=100
-w = 200
+'''w = 200
 b = 100
 
 tmp_f_wb = compute_model_output(x_train, w, b)
 plt.plot(x_train, tmp_f_wb, c='b', label='Nossa Previsão')
 plt.scatter(x_train, y_train, marker='x', c='r', label='Valores Reais')
 plt.legend()
-plt.show()
+plt.show()'''
 
 # Agora que temos o modelo, vamos prever o preço de uma casa com 1200 sqft(x = 1.2):
-w = 200
+'''w = 200
 b = 100
 x = 1.2
 cost_1200sqft = w * x_i + b
 
-print(f"${cost_1200sqft:.0f} mil dólares")
+print(f"${cost_1200sqft:.0f} mil dólares")'''
