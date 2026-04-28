@@ -1,0 +1,1 @@
+"A regularização na classificação impede que o limite de decisão tente 'caçar' pontos de erro (ruído). No Scikit-Learn, utilizamos o parâmetro C, onde valores menores aumentam a força da regularização (equivalente a um lambda maior)
